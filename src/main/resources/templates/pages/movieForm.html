@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+  --color-main-50: #f0f4f2;
+  --color-main-100: #e2e9e6;
+  --color-main-200: #c5d3cc;
+  --color-main-300: #a8bdb3;
+  --color-main-400: #8ba799;
+  --color-main-500: #6e9180;
+  --color-main-600: #587466;
+  --color-main-700: #42574d;
+  --color-main-800: #2c3a33;
+  --color-main-900: #161d1a;
+  --color-main-950: #0f1412;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div class="mx-auto w-1/2">
+
+    <form action="/movies/saveMovie" method="post" th:object="${movie}">
+        <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 mb-4">
+            <div class="sm:col-span-2">
+                <label
+                        for="title"
+                        class="block mb-2 text-base font-medium text-main-400"
+                >
+                    Título
+                </label>
+                <input
+                        th:field="*{title}"
+                        type="text"
+                        name="title"
+                        id="title"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        placeholder="Type product name"
+                />
+            </div>
+            <div hidden class="w-full">
+                <input hidden th:field="*{id}" type="text" name="id" id="id"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                       placeholder="Product brand">
+            </div>
+            <div class="w-full">
+                <label
+                        for="releaseDate"
+                        class="block mb-2 text-base font-medium text-main-400"
+                >
+                    Fecha de lanzamiento
+                </label>
+                <input
+                        th:field="*{releaseDate}"
+                        type="date"
+                        name="releaseDate"
+                        id="releaseDate"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        placeholder="Product brand"
+                />
+            </div>
+            <div class="w-full">
+                <label
+                        for="runTime"
+                        class="block mb-2 text-base font-medium text-main-400"
+                >
+                    Duración (mins)
+                </label>
+                <input
+                        th:field="*{runTime}"
+                        type="number"
+                        name="runTime"
+                        id="runTime"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-main-600 focus:border-main-600 block w-full p-2.5"
+                        placeholder="2999"
+                />
+            </div>
+            <div>
+                <label
+                        for="status"
+                        class="block mb-2 text-base font-medium text-main-400"
+                >
+                    Estado
+                </label>
+                <select
+                        th:field="*{status}"
+                        id="status"
+                        name="status"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                >
+                    <option value="" selected disabled>Selecciona una opción</option>
+                    <option value="En producción">En producción</option>
+                    <option value="En cines">En cines</option>
+                    <option value="En plataformas digitales">
+                        En plataformas digitales
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label
+                        for="imageLink"
+                        class="block mb-2 text-base font-medium text-main-400"
+                >
+                    Link de la imagen
+                </label>
+                <input
+                        th:field="*{imageLink}"
+                        type="text"
+                        name="imageLink"
+                        id="imageLink"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        placeholder="https://url-example.com"
+                />
+            </div>
+            <div class="sm:col-span-2">
+                <label
+                        for="overview"
+                        class="block mb-2 text-base font-medium text-main-400"
+                >
+                    Sinposis
+                </label>
+                <textarea
+                        th:field="*{overview}"
+                        id="overview"
+                        name="overview"
+                        rows="8"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                        placeholder="Tu sinopsis aquí"
+                ></textarea>
+            </div>
+        </div>
+        <div class="flex justify-between">
+            <button
+                    type="submit"
+                    class="inline-flex items-center px-5 py-2.5 text-xs font-light text-center text-main-50 font-semibold bg-main-400 rounded-lg hover:bg-main-300 cursor-pointer"
+            >
+                Actualizar película
+            </button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

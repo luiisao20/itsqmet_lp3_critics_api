@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+  --color-main-50: #f0f4f2;
+  --color-main-100: #e2e9e6;
+  --color-main-200: #c5d3cc;
+  --color-main-300: #a8bdb3;
+  --color-main-400: #8ba799;
+  --color-main-500: #6e9180;
+  --color-main-600: #587466;
+  --color-main-700: #42574d;
+  --color-main-800: #2c3a33;
+  --color-main-900: #161d1a;
+  --color-main-950: #0f1412;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div>
+    <section class="container px-4 mx-auto w-1/2 mt-8">
+        <div class="flex flex-col">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    <div class="overflow-hidden border border-gray-200 md:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    UUID
+                                </th>
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Username
+                                </th>
+
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Nombre
+                                </th>
+
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Rol
+                                </th>
+
+                                <th scope="col" class="relative py-3.5 px-4">
+                                    <span class="sr-only">Actions</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tr th:each="user:${users}">
+                                <td th:text="*{user.uuid}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                </td>
+                                <td th:text="*{user.username}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                </td>
+                                <td th:text="*{user.lastName} + ' ' + *{user.firstName}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                </td>
+                                <td th:text="*{user.role}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-6">
+                                        <button class="text-gray-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                                            Editar
+                                        </button>
+                                        <form th:action="@{/users/delete/} + ${user.uuid}" method="post">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar el usuario?')"
+                                                    class="text-red-600 cursor-pointer hover:underline">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+</body>
+</html>

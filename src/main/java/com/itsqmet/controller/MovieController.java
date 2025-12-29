@@ -3,20 +3,15 @@ package com.itsqmet.controller;
 import com.itsqmet.entity.Movie;
 import com.itsqmet.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/movies")
-@CrossOrigin(origins = "http://localhost:5173", methods = {
-        RequestMethod.GET,
-        RequestMethod.POST,
-        RequestMethod.PUT,
-        RequestMethod.DELETE,
-        RequestMethod.OPTIONS
-})
 public class MovieController {
     @Autowired
     private MovieService movieService;
@@ -24,13 +19,36 @@ public class MovieController {
     private List<Movie> movies;
 
     @GetMapping
-    public List<Movie> getMovies() {
-        return movieService.showMovies();
+    public String getMovies(Model model) {
+        List<Movie> movies = movieService.showMovies();
+        model.addAttribute("movies", movies);
+        return "pages/movies";
+    }
+
+    @GetMapping("/admin")
+    public String getMoviesAdmin(Model model) {
+        List<Movie> movies = movieService.showMovies();
+        model.addAttribute("movies", movies);
+        return "pages/moviesAdmin";
+    }
+
+    @GetMapping("/create")
+    public String createMovie(Model model) {
+        Movie movie = new Movie();
+        model.addAttribute("movie", movie);
+        return "pages/movieForm";
     }
 
     @GetMapping("/{id}")
     public Optional<Movie> getMovieById(@PathVariable Long id) {
         return movieService.findMovieById(id);
+    }
+
+    @GetMapping("/edit/{id}")
+    public String updateMovie(@PathVariable Long id, Model model) {
+        Optional<Movie> movie = movieService.findMovieById(id);
+        model.addAttribute("movie", movie);
+        return "pages/movieForm";
     }
 
     @PostMapping("/saveAllMovie")
@@ -39,17 +57,14 @@ public class MovieController {
     }
 
     @PostMapping("/saveMovie")
-    public Movie saveMovie(@RequestBody Movie movie) {
-        return movieService.saveMovie(movie);
+    public String saveMovie(@ModelAttribute Movie movie) {
+        movieService.saveMovie(movie);
+        return "redirect:/movies/admin";
     }
 
-    @PutMapping("/updateMovie/{id}")
-    public Movie updateMovie(@PathVariable Long id, @RequestBody Movie movie) {
-        return movieService.updateMovie(id, movie);
-    }
-
-    @DeleteMapping("/deleteMovie/{id}")
-    public void deleteMovie(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
+        return "redirect:/movies/admin";
     }
 }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+  --color-main-50: #f0f4f2;
+  --color-main-100: #e2e9e6;
+  --color-main-200: #c5d3cc;
+  --color-main-300: #a8bdb3;
+  --color-main-400: #8ba799;
+  --color-main-500: #6e9180;
+  --color-main-600: #587466;
+  --color-main-700: #42574d;
+  --color-main-800: #2c3a33;
+  --color-main-900: #161d1a;
+  --color-main-950: #0f1412;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div>
+    <section class="container px-4 mx-auto w-1/2 mt-8">
+        <div class="flex flex-col">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    <div class="overflow-hidden border border-gray-200 md:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Id
+                                </th>
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Título
+                                </th>
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Estreno
+                                </th>
+
+                                <th scope="col"
+                                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                                    Estado
+                                </th>
+
+                                <th scope="col" class="relative py-3.5 px-4">
+                                    <span class="sr-only">Acciones</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tr th:each="movie:${movies}">
+                                <td th:text="*{movie.id}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                </td>
+                                <td th:text="*{movie.title}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                </td>
+                                <td th:text="${#temporals.format(movie.releaseDate, 'dd MMM yyyy')}"
+                                    class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                </td>
+                                <td th:text="*{movie.status}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div class="flex items-center gap-x-6">
+                                        <a th:href="@{/movies/edit/} + ${movie.id}"
+                                           class="text-blue-500 cursor-pointer hover:underline">
+                                            Editar
+                                        </a>
+                                        <form th:action="@{/movies/delete/} + ${movie.id}" method="post">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button type="submit"
+                                                    onclick="return confirm('¿Estás seguro de eliminar el registro?')"
+                                                    class="text-red-500 hover:underline cursor-pointer">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+</body>
+</html>
