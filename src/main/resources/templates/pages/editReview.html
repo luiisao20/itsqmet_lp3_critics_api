@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${review.title}">Crítica</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style type="text/tailwindcss">
+        @theme {
+            --color-main-50: #f0f4f2;
+            --color-main-100: #e2e9e6;
+            --color-main-200: #c5d3cc;
+            --color-main-300: #a8bdb3;
+            --color-main-400: #8ba799;
+            --color-main-500: #6e9180;
+            --color-main-600: #587466;
+            --color-main-700: #42574d;
+            --color-main-800: #2c3a33;
+            --color-main-900: #161d1a;
+        }
+    </style>
+</head>
+
+<body class="bg-main-50">
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Formulario -->
+    <section class="mt-12 bg-white rounded-2xl shadow p-8">
+        <h2 class="text-xl font-semibold text-main-700 mb-6">
+            Editar crítica
+        </h2>
+
+        <form action="/reviews/save" method="post" th:object="${review}" class="space-y-5">
+            <h2 th:if="${param.error}" class="text-red-500 text-sm mt-1">Debes llenar el formulario</h2>
+            <input hidden th:field="*{id}"/>
+            <input hidden name="movie_id" th:value="${review.movie.id}"/>
+            <div>
+                <label class="block text-sm font-medium text-main-700 mb-1">
+                    Título
+                </label>
+                <input th:field="*{title}"
+                       type="text"
+                       class="w-full rounded-lg border border-main-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-main-400"/>
+            </div>
+            <p th:if="${#fields.hasErrors('title')}"
+               th:errors="*{title}"
+               class="text-red-500 text-sm mt-1">
+            </p>
+            <div>
+                <label for="content" class="block text-sm font-medium text-main-700 mb-1">
+                    Contenido
+                </label>
+                <textarea th:field="*{content}"
+                          name="content"
+                          id="content"
+                          rows="5"
+                          class="w-full rounded-lg border border-main-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-main-400"></textarea>
+            </div>
+            <p th:if="${#fields.hasErrors('content')}"
+               th:errors="*{content}"
+               class="text-red-500 text-sm mt-1">
+            </p>
+            <button type="submit"
+                    class="px-6 py-2 rounded-lg bg-main-500 text-white hover:bg-main-400 transition">
+                Guardar
+            </button>
+        </form>
+    </section>
+
+</div>
+</body>
+</html>

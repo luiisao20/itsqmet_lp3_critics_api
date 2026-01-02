@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -33,11 +35,16 @@ public class User {
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "El nombre de usuario solo puede poseer números y letras")
     private String username;
 
-    @NotBlank(message = "Debes ingresar una contraseña")
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
 
     public User(String username, String password) {
         this.username = username;

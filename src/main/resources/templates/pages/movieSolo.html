@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${movie.title}">Película</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style type="text/tailwindcss">
+        @theme {
+            --color-main-50: #f0f4f2;
+            --color-main-100: #e2e9e6;
+            --color-main-200: #c5d3cc;
+            --color-main-300: #a8bdb3;
+            --color-main-400: #8ba799;
+            --color-main-500: #6e9180;
+            --color-main-600: #587466;
+            --color-main-700: #42574d;
+            --color-main-800: #2c3a33;
+            --color-main-900: #161d1a;
+        }
+    </style>
+</head>
+
+<body class="bg-main-50">
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Card principal -->
+    <div th:object="${movie}" class="bg-white rounded-2xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        <!-- Imagen -->
+        <img th:src="*{imageLink}"
+             alt="Imagen de la película"
+             class="rounded-xl object-cover w-full md:col-span-1"/>
+
+        <!-- Información -->
+        <div class="md:col-span-3 space-y-4">
+            <h1 th:text="*{title}"
+                class="text-3xl font-semibold text-main-800"></h1>
+
+            <div class="flex flex-wrap gap-6 text-sm text-main-600">
+                <span th:text="'Fecha de estreno: ' + ${#temporals.format(movie.releaseDate, 'dd MMM yyyy')}"></span>
+                <span th:text="'Duración: ' + *{runTime} + ' mins'"></span>
+                <span th:text="'Estado: ' + *{status}"></span>
+            </div>
+
+            <p th:text="*{overview}"
+               class="text-main-700 leading-relaxed"></p>
+
+            <!-- Géneros -->
+            <div>
+                <h3 class="font-medium text-main-700 mb-2">Géneros</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span th:each="genre : *{genres}"
+                          th:text="${genre.name}"
+                          class="px-3 py-1 text-xs rounded-full bg-main-100 text-main-700">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Críticas -->
+    <section class="mt-12">
+        <h2 class="text-2xl font-semibold text-main-700 mb-6 text-center">
+            Críticas
+        </h2>
+
+        <div class="space-y-4">
+            <div th:each="review : ${movie.reviews}"
+                 class="bg-white rounded-xl shadow p-5">
+                <h3 th:text="'@' + ${review.user.username}"
+                    class="font-semibold text-main-800"></h3>
+                <h3 th:text="${review.title}"
+                    class="font-semibold text-main-800"></h3>
+                <p th:text="${review.content}"
+                   class="text-main-700 mt-2"></p>
+                <p class="text-xs text-main-500 mt-3">
+                    <span th:text="${#temporals.format(review.releaseDate, 'dd MMM yyyy')}"></span>
+                </p>
+                <div th:if="${#authentication != null and #authentication.name == review.user.username}"
+                     class="flex gap-3 mt-4">
+                    <a th:href="@{/reviews/edit/} + ${review.id}"
+                       class="text-sm text-blue-600 hover:underline">
+                        Editar
+                    </a>
+                    <form th:action="@{/reviews/delete/} + ${review.id}"
+                          method="post">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <input type="hidden" name="movie_id" th:value="${movie.id}"/>
+                        <button type="submit"
+                                onclick="return confirm('¿Estás seguro de eliminar el registro?')"
+                                class="text-sm text-red-600 hover:underline">
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulario -->
+    <section class="mt-12 bg-white rounded-2xl shadow p-8">
+        <h2 class="text-xl font-semibold text-main-700 mb-6">
+            Agregar crítica
+        </h2>
+
+        <form action="/reviews/save" method="post" th:object="${review}" class="space-y-5">
+            <h2 th:if="${param.error}" class="text-red-500 text-sm mt-1">Debes llenar el formulario</h2>
+            <input hidden th:field="*{id}"/>
+            <input hidden name="movie_id" th:value="${movie.id}"/>
+            <div>
+                <label class="block text-sm font-medium text-main-700 mb-1">
+                    Título
+                </label>
+                <input th:field="*{title}"
+                       type="text"
+                       class="w-full rounded-lg border border-main-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-main-400"/>
+            </div>
+            <p th:if="${#fields.hasErrors('title')}"
+               th:errors="*{title}"
+               class="text-red-500 text-sm mt-1">
+            </p>
+            <div>
+                <label for="content" class="block text-sm font-medium text-main-700 mb-1">
+                    Contenido
+                </label>
+                <textarea th:field="*{content}"
+                          name="content"
+                          id="content"
+                          rows="5"
+                          class="w-full rounded-lg border border-main-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-main-400"></textarea>
+            </div>
+            <p th:if="${#fields.hasErrors('content')}"
+               th:errors="*{content}"
+               class="text-red-500 text-sm mt-1">
+            </p>
+            <button type="submit"
+                    class="px-6 py-2 rounded-lg bg-main-500 text-white hover:bg-main-400 transition">
+                Publicar crítica
+            </button>
+        </form>
+    </section>
+
+</div>
+</body>
+</html>

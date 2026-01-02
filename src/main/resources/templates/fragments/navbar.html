@@ -1,4 +1,4 @@
-<div th:fragment="navbar">
+<div th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav class="bg-main-800 shadow">
         <div
                 class="container flex items-center justify-center p-6 mx-auto text-main-400 capitalize text-sm"
@@ -10,13 +10,7 @@
                 Home
             </a>
             <a
-                    th:ref="@{/movies/create}"
-                    class="border-b-2 hover:text-main-100 transition-colors duration-300 transform hover:border-main-50 mx-1.5 sm:mx-6"
-            >
-                Registrar
-            </a>
-
-            <a
+                    sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')"
                     th:href="@{/users}"
                     class="border-b-2 border-transparent hover:text-main-100 transition-colors duration-300 transform hover:border-main-50 mx-1.5 sm:mx-6"
             >

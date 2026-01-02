@@ -61,19 +61,23 @@
                             <tr th:each="user:${users}">
                                 <td th:text="*{user.uuid}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                                 </td>
-                                <td th:text="*{user.username}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                <td th:text="*{user.username}"
+                                    class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                                 </td>
-                                <td th:text="*{user.lastName} + ' ' + *{user.firstName}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                <td th:text="*{user.lastName} + ' ' + *{user.firstName}"
+                                    class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                                 </td>
                                 <td th:text="*{user.role}" class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center gap-x-6">
-                                        <button class="text-gray-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                                        <a th:href="@{/users/update/} + *{user.uuid}"
+                                            class="text-blue-600 cursor-pointer hover:underline">
                                             Editar
-                                        </button>
+                                        </a>
                                         <form th:action="@{/users/delete/} + ${user.uuid}" method="post">
                                             <input type="hidden" name="_method" value="delete"/>
-                                            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar el usuario?')"
+                                            <button type="submit"
+                                                    onclick="return confirm('¿Estás seguro de eliminar el usuario?')"
                                                     class="text-red-600 cursor-pointer hover:underline">
                                                 Eliminar
                                             </button>

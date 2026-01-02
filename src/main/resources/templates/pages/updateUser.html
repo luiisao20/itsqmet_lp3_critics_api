@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+  --color-main-50: #f0f4f2;
+  --color-main-100: #e2e9e6;
+  --color-main-200: #c5d3cc;
+  --color-main-300: #a8bdb3;
+  --color-main-400: #8ba799;
+  --color-main-500: #6e9180;
+  --color-main-600: #587466;
+  --color-main-700: #42574d;
+  --color-main-800: #2c3a33;
+  --color-main-900: #161d1a;
+  --color-main-950: #0f1412;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div
+        class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+>
+    <div
+            class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0"
+    >
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-text md:text-2xl">
+                Crear un usuario nuevo
+            </h1>
+            <form class="flex flex-col gap-4" action="/users/createUser" method="post" th:object="${user}">
+                <input
+                        hidden
+                        th:value="*{uuid}"
+                        type="text"
+                        id="uuid"
+                        name="uuid"
+                />
+                <div class="relative">
+                    <input
+                            th:field="*{username}"
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-heading bg-transparent rounded-base border border-main-200 rounded-xl border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-main-950 peer"
+                            placeholder=" "
+                    />
+                    <label
+                            for="username"
+                            class="absolute text-sm text-main-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-left bg-white px-2 peer-focus:px-2 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                    >
+                        Agrega un username
+                    </label>
+                </div>
+                <p th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}"
+                   class="text-red-500 text-sm mt-1">
+                </p>
+                <div class="relative">
+                    <input
+                            th:field="*{firstName}"
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-heading bg-transparent rounded-base border border-main-200 rounded-xl border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-main-950 peer"
+                            placeholder=" "
+                    />
+                    <label
+                            for="firstName"
+                            class="absolute text-sm text-main-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-left bg-white px-2 peer-focus:px-2 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                    >
+                        Ingresa el nombre
+                    </label>
+                </div>
+                <p th:if="${#fields.hasErrors('firstName')}"
+                   th:errors="*{firstName}"
+                   class="text-red-500 text-sm mt-1">
+                </p>
+                <div class="relative">
+                    <input
+                            th:field="*{lastName}"
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-heading bg-transparent rounded-base border border-main-200 rounded-xl border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-main-950 peer"
+                            placeholder=" "
+                    />
+                    <label
+                            for="lastName"
+                            class="absolute text-sm text-main-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-left bg-white px-2 peer-focus:px-2 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                    >
+                        Ingresa el apellido
+                    </label>
+                </div>
+                <p th:if="${#fields.hasErrors('lastName')}"
+                   th:errors="*{lastName}"
+                   class="text-red-500 text-sm mt-1">
+                </p>
+                <div>
+                    <label
+                            for="role"
+                            class="block mb-2 text-base font-medium text-main-400"
+                    >
+                        Estado
+                    </label>
+                    <select
+                            th:field="*{role}"
+                            id="role"
+                            name="role"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    >
+                        <option value="ROLE_USER" selected>Usuario normal</option>
+                        <option value="ROLE_MODERATOR">Moderador</option>
+                        <option value="ROLE_ADMIN">Administrador</option>
+                    </select>
+                </div>
+                <button
+                        type="submit"
+                        class="w-full text-white bg-main-950 cursor-pointer hover:bg-main-950/70 font-medium rounded-lg text-sm px-5 py-2.5"
+                >
+                    Crear usuario
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

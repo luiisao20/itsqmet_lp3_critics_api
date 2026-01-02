@@ -102,6 +102,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+		</dependency>
+
 		<!--PDF-->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
